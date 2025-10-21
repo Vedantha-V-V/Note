@@ -1,4 +1,4 @@
-package com.example.toastsandlogs
+package com.example.note
 
 import org.junit.Test
 

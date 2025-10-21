@@ -1,4 +1,4 @@
-package com.example.toastsandlogs.ui.theme
+package com.example.note.ui.theme
 
 import androidx.compose.ui.graphics.Color
 

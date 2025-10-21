@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.toastsandlogs"
+    namespace = "com.example.note"
     compileSdk = 36
 
     defaultConfig {

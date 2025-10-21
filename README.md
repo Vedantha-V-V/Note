@@ -1,17 +1,16 @@
-# Toast and Logs
+# ReadiNote
 ---
-### This assignment covers the Android Activity Lifecycle using Toast and Logs.
+### Android Application for easy note-taking.
 
-Lifecycle Methods Covered: <br>
-onCreate() → Activity is created (UI setup happens here). <br>
-onStart() → Activity is about to become visible. <br>
-onResume() → Activity is visible and interactive. <br>
-onPause() → Activity is partially visible (e.g., another activity is opening). <br>
-onStop() → Activity is hidden (not visible). <br>
-onRestart() → Activity is restarting after being stopped. <br>
-onDestroy() → Activity is destroyed (before the app closes). <br>
-
-What happens when you run it: <br>
-Each time a lifecycle method is called, you’ll see: <br>
-A Toast message (on-screen popup). <br>
-A Log message (visible in Logcat in Android Studio with tag "ActivityLifeCycle"). <br>
+**Dependencies:**
+  - Room database for local storage
+  - Jetpack Compose Navigation for multiple screens
+- **Components & Layout:**
+  - [ ]  List screen showing saved notes with preview snippets
+  - [ ]  Add/Edit note screen with multiline text input
+  - [ ]  Use card layouts and readable fonts for notes display
+- **Functionalities:**
+  - [ ]  Add, edit, delete text notes stored locally
+  - [ ]  Room DAO layer
+  - [ ]  Save notes persistently and load efficiently
+  - [ ]  Basic search functionality to filter notes by content
