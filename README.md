@@ -1,4 +1,4 @@
-# ReadiNote
+# LemmiNote
 ---
 ### Android Application for easy note-taking.
 

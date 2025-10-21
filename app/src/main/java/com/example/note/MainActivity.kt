@@ -14,10 +14,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -50,9 +52,7 @@ class MainActivity : ComponentActivity() {
                             name = "ReadiNote",
                             modifier = Modifier.padding(innerPadding)
                         )
-                        Card {
-                            Text("Hello")
-                        }
+                        NoteSection()
                     }
                 }
             }
@@ -86,5 +86,26 @@ fun Heading(context: Context,name: String, modifier: Modifier = Modifier) {
 
 @Composable
 fun NoteSection(){
-    
+    val data = listOf("Card 1", "Card 2", "Card 3", "Card 4", "Card 5")
+    LazyColumn(modifier=Modifier.fillMaxSize(),
+        contentPadding = PaddingValues(8.dp),
+        verticalArrangement=Arrangement.spacedBy(8.dp)){
+        items(data.chunked(2).size){ index ->
+            val rowItem = data.chunked(2)[index]
+            Row(modifier=Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(5.dp)){
+                Card(modifier=Modifier.weight(1f)){
+                    Text(text=rowItem[0],modifier=Modifier.padding(16.dp))
+                }
+                if(rowItem.size > 1){
+                    Card(modifier=Modifier.weight(1f)){
+                        Text(text=rowItem[1],modifier=Modifier.padding(16.dp))
+                    }
+                }else{
+                    Spacer(modifier=Modifier.weight(1f))
+                }
+            }
+        }
+
+    }
 }
