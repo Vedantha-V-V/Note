@@ -11,6 +11,6 @@
   - [ ]  Use card layouts and readable fonts for notes display
 - **Functionalities:**
   - [ ]  Add, edit, delete text notes stored locally
-  - [ ]  Room DAO layer
+  - [X]  Room DAO layer
   - [ ]  Save notes persistently and load efficiently
   - [ ]  Basic search functionality to filter notes by content

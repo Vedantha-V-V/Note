@@ -3,6 +3,7 @@ package com.example.note
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Query
+import androidx.room.Update
 import androidx.room.Upsert
 import kotlinx.coroutines.flow.Flow
 
@@ -10,6 +11,8 @@ import kotlinx.coroutines.flow.Flow
 interface NoteDao {
     @Upsert
     suspend fun addNote(note: Note)
+    @Update
+    suspend fun updateNote(note:Note)
     @Delete
     suspend fun deleteNote(note:Note)
 

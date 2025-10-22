@@ -5,5 +5,6 @@ import java.util.Date
 data class NoteState(
     val notes: List<Note> = emptyList(),
     val title: String = "",
-    val content: String = ""
+    val content: String = "",
+    val isNoting:Boolean = false
 )
