@@ -1,64 +1,47 @@
 package com.example.note.viewmodel
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.note.MainApplication
 import com.example.note.Note
-import com.example.note.NoteDao
-import com.example.note.NoteEvent
-import com.example.note.NoteState
+import com.example.note.db.NoteDao
+import com.example.note.R
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.Instant
+import java.util.Date
+import kotlin.collections.emptyList
 
-class NoteViewModel(
-    private val dao: NoteDao
-): ViewModel(){
-    private val _notes = dao.getNotes()
-    private val state = MutableStateFlow(NoteState())
-//    val state = combine(_state, _notes){ state, notes ->
-//        state.copy(
-//            notes = notes
-//        )
-//    }
+class NoteViewModel: ViewModel(){
+    val notesDao = MainApplication.notesDB.getNotesDao()
+    val notes : LiveData<List<Note>> = notesDao.getAllNotes()
 
-    fun onEvent(event: NoteEvent){
-        when(event){
-            is NoteEvent.DeleteNote -> {
-                viewModelScope.launch {
-                    dao.deleteNote(event.note)
-                }
-            }
-            is NoteEvent.AddNote -> {
-                var title = state.value.title
-                var content = state.value.content
-                if(title.isBlank()){
-                    title = "New Title"
-                }
-                if(content.isBlank()){
-                    content = "..."
-                }
-                val note = Note(
-                    title = title,
-                    content = content
-                )
-                viewModelScope.launch{
-                    dao.addNote(note)
-                }
-            }
-            is NoteEvent.SetTitle -> {
-                state.update{ it.copy(title = event.title) }
-            }
-            is NoteEvent.SetContent -> {
-                state.update{ it.copy(content = event.content) }
-            }
-            is NoteEvent.UpdateNote -> TODO()
-            NoteEvent.HideNote -> {
-                state.update{ it.copy(isNoting = false) }
-            }
-            NoteEvent.ShowNote -> {
-                state.update{ it.copy(isNoting = false) }
-            }
+    val isNoting = mutableStateOf(false)
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun addNote(title:String, content:String){
+        viewModelScope.launch(Dispatchers.IO){
+            notesDao.addNote(Note(title=title, content=content,createdAt= Date.from(Instant.now())))
         }
+    }
+
+    fun deleteNote(id:Int){
+        viewModelScope.launch(Dispatchers.IO){
+            notesDao.deleteNote(id)
+        }
+
     }
 }

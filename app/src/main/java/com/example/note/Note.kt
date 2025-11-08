@@ -8,6 +8,7 @@ import java.util.Date
 data class Note(
     val title:String,
     val content: String,
+    val createdAt: Date,
     @PrimaryKey(autoGenerate = true)
-    val id:Int? = null
+    val id:Int = 0
 )
