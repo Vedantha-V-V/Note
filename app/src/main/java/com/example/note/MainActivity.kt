@@ -2,6 +2,7 @@ package com.example.note
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
@@ -9,6 +10,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -40,6 +42,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -59,6 +62,7 @@ import com.example.note.ui.theme.Teal700
 import com.example.note.viewmodel.NoteViewModel
 
 class MainActivity : ComponentActivity() {
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val noteViewModel = ViewModelProvider(this)[NoteViewModel::class.java]
@@ -66,10 +70,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             NoteTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Column(modifier=Modifier.background(Color.hsl(41F, 0.48F, 0.7F)).fillMaxSize()) {
+                    Column(modifier=Modifier.background(Color(0xFFFFE1AF)).fillMaxSize()) {
                         Heading(
                             name = "LemmiNote",
-                            modifier = Modifier.padding(innerPadding)
+                            modifier = Modifier.padding(innerPadding),
+                            viewModel = noteViewModel
                         )
                         NoteSection(noteViewModel)
                     }
@@ -79,9 +84,21 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@RequiresApi(Build.VERSION_CODES.O)
 @Composable
-fun Heading(name: String, modifier: Modifier = Modifier) {
+fun Heading(name: String, modifier: Modifier = Modifier,viewModel: NoteViewModel) {
     val showDialog = remember { mutableStateOf(false) }
+    var enteredText by remember { mutableStateOf("No text entered yet.") }
+    if (showDialog.value){
+        AddNoteScreen(
+            viewModel = viewModel,
+            showDialog = showDialog.value,
+            onDismiss = { showDialog.value = false },
+            onConfirm = { newText ->
+                enteredText = "Entered: $newText"
+                showDialog.value = false
+            })
+    }
     Row(modifier=Modifier.fillMaxWidth()
         .padding(0.dp,20.dp,0.dp,10.dp),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -92,11 +109,11 @@ fun Heading(name: String, modifier: Modifier = Modifier) {
                 fontWeight = FontWeight.Bold,
                 fontSize = 30.sp
             ),
-            color = Green80,
+            color = Color(0xFF6FA4AF),
             modifier = Modifier.padding(16.dp)
         )
         OutlinedButton(onClick = {
-            //isNoting=True
+            showDialog.value = true
         },
             modifier=Modifier.size(35.dp),
             shape= CircleShape,

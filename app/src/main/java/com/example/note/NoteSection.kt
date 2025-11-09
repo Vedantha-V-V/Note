@@ -18,11 +18,14 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -60,11 +63,28 @@ fun NoteSection(viewModel: NoteViewModel){
 fun NoteUI(item : Note,onDelete : ()-> Unit,modifier:Modifier=Modifier){
     Card(modifier=modifier.fillMaxWidth()
         .padding(4.dp),
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFE2B59A),
+        ),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)){
-        Text(text=item.title,modifier=Modifier.padding(16.dp))
-        Text(text=item.content,modifier=Modifier.padding(16.dp))
+        Text(
+            text=item.title,
+            modifier=Modifier.padding(16.dp),
+            style = MaterialTheme.typography.headlineLarge.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 24.sp
+            ),
+            color = Color(0xFFB77466))
+        Text(
+            text=item.content,
+            modifier=Modifier.padding(16.dp),
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp
+            ),
+            color = Color(0xFFB77466))
         IconButton(onClick = onDelete){
-            Icon(imageVector=Icons.Default.Delete,contentDescription="Delete Note")
+            Icon(imageVector=Icons.Default.Delete,contentDescription="Delete Note", tint = Color(0xFF957C62))
         }
     }
 }
